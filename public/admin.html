@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - 360 Appraisal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+
+<body class="dashboard-body">
+    <nav class="navbar glass-panel">
+        <div class="nav-brand">HR 360° - Admin Panel</div>
+        <button class="hamburger" id="navToggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
+        <div class="nav-user" id="navMenu">
+            <div id="userAvatar" class="avatar hidden"></div>
+            <span id="userName">Admin</span>
+            <button id="logoutBtn" class="btn-text">Logout</button>
+        </div>
+    </nav>
+
+    <main class="container-admin fade-in">
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="summary">Ringkasan</button>
+            <button class="tab-btn" data-tab="employees">Kelola Karyawan</button>
+            <button class="tab-btn" data-tab="assignments">Kelola Assignment</button>
+            <button class="tab-btn" data-tab="results">Hasil Penilaian</button>
+        </div>
+
+        <!-- Tab: Summary -->
+        <div class="tab-content active" id="tab-summary">
+            <div class="tab-header">
+                <h2>Ringkasan Appraisal</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stats-card glass-panel fade-in" style="animation-delay: 0.1s">
+                    <div class="stats-icon">👥</div>
+                    <div class="stats-info">
+                        <span class="stats-label">Total Karyawan</span>
+                        <h3 id="statTotalEmployees" class="stats-value">-</h3>
+                    </div>
+                </div>
+                <div class="stats-card glass-panel fade-in" style="animation-delay: 0.2s">
+                    <div class="stats-icon">📝</div>
+                    <div class="stats-info">
+                        <span class="stats-label">Total Assignment</span>
+                        <h3 id="statTotalAssignments" class="stats-value">-</h3>
+                    </div>
+                </div>
+                <div class="stats-card glass-panel fade-in" style="animation-delay: 0.3s">
+                    <div class="stats-icon">✅</div>
+                    <div class="stats-info">
+                        <span class="stats-label">Penilaian Selesai</span>
+                        <h3 id="statCompletedAppraisals" class="stats-value">-</h3>
+                    </div>
+                </div>
+                <div class="stats-card glass-panel fade-in" style="animation-delay: 0.4s">
+                    <div class="stats-icon">📊</div>
+                    <div class="stats-info">
+                        <span class="stats-label">Progress</span>
+                        <h3 id="statProgress" class="stats-value">-</h3>
+                        <div class="progress-track" style="height: 6px; margin-top: 8px;">
+                            <div id="statProgressBar" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-details grid-container">
+                <div class="summary-card glass-panel fade-in" style="animation-delay: 0.5s">
+                    <h3>Aktivitas Terbaru</h3>
+                    <div id="latestActivity" class="list-container">
+                        <p class="text-muted">Memuat aktivitas...</p>
+                    </div>
+                </div>
+                <div class="summary-card glass-panel fade-in" style="animation-delay: 0.6s">
+                    <h3>Top Peformance (Rating Rata-rata)</h3>
+                    <div id="topPerformers" class="list-container">
+                        <p class="text-muted">Memuat data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-details grid-container" style="margin-top: 1.5rem;">
+                <div class="summary-card glass-panel fade-in" style="animation-delay: 0.7s">
+                    <h3>Distribusi Skor</h3>
+                    <div style="height: 300px; display: flex; justify-content: center;">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                </div>
+                <div class="summary-card glass-panel fade-in" style="animation-delay: 0.8s">
+                    <h3>Rata-rata Per Departemen</h3>
+                    <div style="height: 300px;">
+                        <canvas id="deptChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Employees -->
+        <div class="tab-content" id="tab-employees">
+            <div class="tab-header">
+                <h2>Kelola Data Karyawan</h2>
+                <div class="action-bar" style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="search-box">
+                        <input type="text" id="searchEmployee" placeholder="Cari Nama Karyawan..."
+                            style="width: 200px;">
+                    </div>
+                    <button class="btn-primary" id="btnAddEmployee">+ Tambah Karyawan</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table id="employeesTable">
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Departemen</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Assignments -->
+        <div class="tab-content" id="tab-assignments">
+            <div class="tab-header">
+                <h2>Kelola Assignment Penilaian</h2>
+                <button class="btn-primary" id="btnAddAssignment">+ Tambah Assignment</button>
+            </div>
+            <div id="assignmentsContainer" class="grid-container">
+                <!-- Assignments Cards will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Tab: Results -->
+        <div class="tab-content" id="tab-results">
+            <div class="tab-header">
+                <h2>Hasil Penilaian</h2>
+                <div class="action-bar" style="display: flex; gap: 1rem; align-items: center;">
+                    <div class="search-box">
+                        <input type="text" id="searchReviewer" placeholder="Cari Penilai..." style="width: 200px;">
+                    </div>
+                    <button class="btn-secondary" id="btnExportExcel"
+                        style="display: flex; align-items: center; gap: 0.5rem; height: 42px;">
+                        📊 Export Excel
+                    </button>
+                </div>
+            </div>
+            <div id="resultsContainer" class="grid-container">
+                <!-- Results Cards will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Add/Edit Employee -->
+    <div id="modalEmployee" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <h3 id="modalEmployeeTitle">Tambah Karyawan</h3>
+            <form id="formEmployee">
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="empEmail" required>
+                </div>
+                <div class="form-group">
+                    <label>Nama *</label>
+                    <input type="text" id="empName" required>
+                </div>
+                <div class="form-group">
+                    <label>Jabatan</label>
+                    <input type="text" id="empPosition">
+                </div>
+                <div class="form-group">
+                    <label>Departemen</label>
+                    <input type="text" id="empDepartment">
+                </div>
+                <div class="form-group">
+                    <label>Password *</label>
+                    <input type="text" id="empPassword" required placeholder="Code unik untuk login">
+                    <small style="color: var(--text-muted); font-size: 0.85rem;">Password yang akan digunakan karyawan
+                        untuk login</small>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="btnCancelEmployee">Batal</button>
+                    <button type="submit" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Add Assignment -->
+    <div id="modalAssignment" class="modal hidden">
+        <div class="modal-content glass-panel">
+            <h3>Tambah Assignment</h3>
+            <form id="formAssignment">
+                <div class="form-group">
+                    <label>Penilai *</label>
+                    <select id="assignReviewer" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Yang Dinilai *</label>
+                    <select id="assignTarget" required></select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="btnCancelAssignment">Batal</button>
+                    <button type="submit" class="btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Result Detail -->
+    <div id="modalResultDetail" class="modal hidden">
+        <div class="modal-content glass-panel" style="max-width: 600px;">
+            <h3>Detail Penilaian</h3>
+
+            <div id="detailActors" class="result-actors-detail"
+                style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--glass-border);">
+                <!-- Actors info will be injected here -->
+            </div>
+
+            <div id="detailScores" class="detail-scores-grid">
+                <!-- Scores list will be injected here -->
+            </div>
+
+            <div class="detail-comment-section">
+                <h4>Komentar Tambahan</h4>
+                <p id="detailCommentText" class="comment-text-full">-</p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary"
+                    onclick="document.getElementById('modalResultDetail').classList.add('hidden')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden">Operasi Berhasil!</div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="modalConfirm" class="modal hidden">
+        <div class="modal-content glass-panel confirm-modal-content">
+            <span class="confirm-icon">⚠️</span>
+            <h3 class="confirm-title" id="confirmTitle">Apakah Anda yakin?</h3>
+            <p class="confirm-text" id="confirmText">Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="confirm-actions">
+                <button class="btn-cancel" id="btnConfirmCancel">Batal</button>
+                <button class="btn-danger" id="btnConfirmAction">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js?v=2"></script>
+</body>
+
+</html>

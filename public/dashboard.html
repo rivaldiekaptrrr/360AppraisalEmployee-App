@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - 360 Appraisal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2">
+</head>
+
+<body class="dashboard-body">
+    <nav class="navbar glass-panel">
+        <div class="nav-brand">HR 360°</div>
+        <button class="hamburger" id="navToggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
+        <div class="nav-user" id="navMenu">
+            <div id="userAvatar" class="avatar hidden"></div>
+            <span id="userName">Loading...</span>
+            <button id="logoutBtn" class="btn-text">Logout</button>
+        </div>
+    </nav>
+
+    <main class="container fade-in">
+        <header class="dashboard-header">
+            <h2>Employee Appraisal</h2>
+            <p>Provide honest and constructive feedback for your assigned colleagues.</p>
+        </header>
+
+        <div class="appraisal-card glass-panel">
+            <div id="progressSection" class="progress-section hidden">
+                <div class="progress-info">
+                    <span class="progress-label">Your Progress</span>
+                    <span id="progressText" class="progress-text">0/0 Completed</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progressBar" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+            <div id="loadingAssignments" class="loading-state">
+                <div class="skeleton-card" style="box-shadow: none; background: transparent; padding: 0;">
+                    <div class="skeleton-header">
+                        <div class="skeleton skeleton-avatar"></div>
+                        <div style="flex: 1;">
+                            <div class="skeleton skeleton-title" style="width: 100%;"></div>
+                            <div class="skeleton skeleton-subtitle"></div>
+                        </div>
+                    </div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line"></div>
+                    <div class="skeleton skeleton-line-short"></div>
+                </div>
+            </div>
+
+            <div id="emptyState" class="empty-state hidden">
+                <h3>🎉 All Caught Up!</h3>
+                <p>You have no pending appraisals.</p>
+            </div>
+
+            <form id="appraisalForm" class="hidden">
+                <div class="form-group">
+                    <label for="targetSelect">Select Employee to Appraise</label>
+                    <div class="select-wrapper">
+                        <select id="targetSelect" required>
+                            <option value="" disabled selected>Choose a colleague...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="selected-employee-info hidden" id="employeeInfo">
+                    <div class="info-row">
+                        <span class="label">Position:</span>
+                        <span class="value" id="empPosition">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Department:</span>
+                        <span class="value" id="empDept">-</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="score">Rating</label>
+                    <div id="multiCriteriaForm">
+                        <!-- 1. Communication -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.1s">
+                            <h3>1. Communication</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_communication" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Komunikasi sering tidak jelas dan menimbulkan
+                                        miskomunikasi.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_communication" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Komunikasi cukup jelas pada situasi sederhana.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_communication" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Berkomunikasi dengan jelas dan efektif dalam sebagian besar
+                                        situasi.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_communication" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Berkomunikasi sangat baik dan membantu kelancaran kerja
+                                        tim.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_communication" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Menjadi contoh komunikasi efektif di lingkungan kerja.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 2. Teamwork & Collaboration -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.2s">
+                            <h3>2. Teamwork & Collaboration</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_teamwork" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Jarang bekerja sama dan kurang mendukung tim.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_teamwork" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Bekerja sama terbatas pada tugas tertentu.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_teamwork" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Aktif bekerja sama dan mendukung pencapaian tim.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_teamwork" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Mendorong kolaborasi dan membantu menyelesaikan konflik
+                                        tim.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_teamwork" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Menjadi penggerak kolaborasi yang positif.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 3. Work Quality -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.3s">
+                            <h3>3. Work Quality</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_quality" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Hasil kerja sering tidak sesuai standar.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_quality" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Kualitas kerja cukup pada tugas sederhana.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_quality" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Hasil kerja konsisten dan sesuai standar.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_quality" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Menjaga kualitas tinggi dan melakukan pengecekan mandiri.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_quality" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Secara konsisten menghasilkan kualitas kerja yang sangat
+                                        baik.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 4. Accountability & Responsibility -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.4s">
+                            <h3>4. Accountability & Responsibility</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_accountability" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Sering tidak menyelesaikan tanggung jawab.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_accountability" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Menyelesaikan tugas dengan pengawasan ketat.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_accountability" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Bertanggung jawab dan menyelesaikan tugas tepat waktu.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_accountability" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Mengambil kepemilikan penuh atas hasil kerja.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_accountability" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Sangat dapat diandalkan dalam menjalankan tanggung jawab.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 5. Compliance & Integrity -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.5s">
+                            <h3>5. Compliance & Integrity</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_integrity" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Sering melanggar aturan atau SOP.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_integrity" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Mematuhi aturan dalam kondisi tertentu.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_integrity" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Secara konsisten mematuhi kebijakan dan etika kerja.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_integrity" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Menjaga kepatuhan dan bersikap profesional.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_integrity" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Menjadi contoh integritas dan kepatuhan.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 6. Problem Solving -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.6s">
+                            <h3>6. Problem Solving</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_problem_solving" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Kesulitan mengidentifikasi dan menyelesaikan masalah.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_problem_solving" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Menyelesaikan masalah sederhana dengan arahan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_problem_solving" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Mampu menganalisis dan menyelesaikan masalah kerja.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_problem_solving" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Menyelesaikan masalah secara efektif dan tepat.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_problem_solving" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Sangat andal dalam menyelesaikan masalah kerja.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 7. Initiative & Proactiveness -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.7s">
+                            <h3>7. Initiative & Proactiveness</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_initiative" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Pasif dan menunggu instruksi.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_initiative" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Menunjukkan inisiatif terbatas.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_initiative" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Proaktif dalam menjalankan tugas dan perbaikan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_initiative" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Aktif mengusulkan ide dan perbaikan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_initiative" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Sangat proaktif dan berinisiatif tinggi.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 8. Time Management -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.8s">
+                            <h3>8. Time Management</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_time_management" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Sering terlambat dan tidak terorganisir.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_time_management" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Mengelola waktu dengan bantuan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_time_management" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Mengatur waktu dan prioritas dengan baik.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_time_management" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Efektif dalam memenuhi deadline.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_time_management" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Sangat efisien dalam mengelola waktu kerja.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 9. Adaptability -->
+                        <div class="criteria-card fade-in" style="animation-delay: 0.9s">
+                            <h3>9. Adaptability</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_adaptability" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Sulit beradaptasi dengan perubahan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_adaptability" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Membutuhkan waktu dan arahan untuk beradaptasi.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_adaptability" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Mampu menyesuaikan diri dengan perubahan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_adaptability" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Cepat beradaptasi dan fleksibel.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_adaptability" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Sangat adaptif terhadap perubahan.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 10. Technical Skills / Job Competency -->
+                        <div class="criteria-card fade-in" style="animation-delay: 1.0s">
+                            <h3>10. Technical Skills / Job Competency</h3>
+                            <div class="criteria-options">
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_technical" value="1" required>
+                                    <span class="bubble">1</span>
+                                    <span class="desc">Kompetensi kerja belum memenuhi kebutuhan pekerjaan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_technical" value="2">
+                                    <span class="bubble">2</span>
+                                    <span class="desc">Kompetensi cukup untuk tugas dasar.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_technical" value="3">
+                                    <span class="bubble">3</span>
+                                    <span class="desc">Kompetensi sesuai dengan tuntutan pekerjaan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_technical" value="4">
+                                    <span class="bubble">4</span>
+                                    <span class="desc">Kompetensi kuat dan dapat diandalkan.</span>
+                                </label>
+                                <label class="criteria-option">
+                                    <input type="radio" name="c_technical" value="5">
+                                    <span class="bubble">5</span>
+                                    <span class="desc">Kompetensi kerja sangat baik dan konsisten</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Feedback / Comments (Optional)</label>
+                    <textarea id="comment" name="comment" rows="4"
+                        placeholder="Share your thoughts on their performance..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">
+                    <span>Submit Appraisal</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <div id="toast" class="toast hidden">Submission Successful!</div>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Onboarding Modal -->
+    <div id="modalOnboarding" class="modal hidden">
+        <div class="modal-content glass-panel onboarding-content">
+            <h2 style="font-size: 1.75rem; color: var(--primary-color);">Halo! 👋</h2>
+            <p>Selamat datang di sistem <b>360° Employee Appraisal</b>. Sistem ini dirancang untuk memberikan masukan
+                konstruktif antar rekan kerja.</p>
+
+            <div class="onboarding-steps">
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-info">
+                        <h4>Pilih Rekan Kerja</h4>
+                        <p>Pilih nama rekan yang muncul di daftar tugas penilaian Anda.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-info">
+                        <h4>Berikan Rating</h4>
+                        <p>Nilai 1-5 berdasarkan 10 kriteria objektif yang telah disediakan.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-info">
+                        <h4>Simpan & Selesaikan</h4>
+                        <p>Klik kirim dan lihat progress bar Anda mencapai 100%!</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="closeOnboarding()">Saya Mengerti, Mulai!</button>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="modalConfirm" class="modal hidden">
+        <div class="modal-content glass-panel confirm-modal-content">
+            <span class="confirm-icon">⚠️</span>
+            <h3 class="confirm-title" id="confirmTitle">Apakah Anda yakin?</h3>
+            <p class="confirm-text" id="confirmText">Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="confirm-actions">
+                <button class="btn-cancel" id="btnConfirmCancel">Batal</button>
+                <button class="btn-danger" id="btnConfirmAction">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="client.js?v=2"></script>
+</body>
+
+</html>
