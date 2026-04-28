@@ -162,6 +162,25 @@ Server akan berjalan di: **http://localhost:3000**
 
 ---
 
+## 🧪 Mock Data Mode (Tanpa Setup)
+
+Jika Anda ingin mencoba aplikasi tanpa melakukan setup Google Cloud dan Google Sheets, aplikasi ini mendukung **Mock Data Mode**.
+
+### Cara Menggunakan:
+1. Jalankan aplikasi tanpa file `service_account.json` atau tanpa mengisi `SPREADSHEET_ID` di `.env`.
+2. Aplikasi akan otomatis mendeteksi konfigurasi yang hilang dan berjalan menggunakan data sementara di memori.
+
+### Data Login Mock:
+- **Admin:** `admin@hr.com` / `admin123`
+- **Karyawan 1:** `john@hr.com` / `password1` (Dapat menilai Jane)
+- **Karyawan 2:** `jane@hr.com` / `password1` (Dapat menilai John)
+- **Karyawan 3:** `bob@hr.com` / `password1` (Dapat menilai John)
+
+> [!NOTE]
+> Dalam mode ini, semua perubahan data (tambah/edit/hapus) hanya tersimpan selama server berjalan dan akan hilang jika server di-restart.
+
+---
+
 ## 🔐 Cara Login
 
 ### Login sebagai Karyawan:
@@ -215,11 +234,10 @@ Password: admin123
 
 ## 🔧 Troubleshooting
 
-### Error: "service_account.json not found"
-- Pastikan file `service_account.json` ada di folder `d:\App\HR App\`
-
-### Error: "SPREADSHEET_ID not set"
-- Pastikan file `.env` sudah diisi dengan Spreadsheet ID yang benar
+### Error: "service_account.json not found" atau "SPREADSHEET_ID not set"
+- Aplikasi akan tetap berjalan tetapi dalam **Mock Data Mode** (Data sementara).
+- Untuk menghubungkan ke Google Sheets, pastikan file `service_account.json` ada dan `SPREADSHEET_ID` di `.env` sudah benar.
+- Pastikan Anda me-restart server setelah memperbaiki konfigurasi.
 
 ### Error: "Permission denied"
 - Pastikan spreadsheet sudah di-share ke service account email

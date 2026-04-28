@@ -23,41 +23,18 @@ app.use(session({
 const CREDENTIALS_EXISTS = fs.existsSync(path.join(__dirname, 'service_account.json'));
 const SPREADSHEET_CONFIGURED = process.env.SPREADSHEET_ID && !process.env.SPREADSHEET_ID.includes('replace_with');
 
-if (!CREDENTIALS_EXISTS || !SPREADSHEET_CONFIGURED) {
-    console.error("WARNING: Configuration missing!");
-    if (!CREDENTIALS_EXISTS) console.error(" - service_account.json not found.");
-    if (!SPREADSHEET_CONFIGURED) console.error(" - SPREADSHEET_ID not set in .env.");
+const IS_MOCKED = !CREDENTIALS_EXISTS || !SPREADSHEET_CONFIGURED;
 
-    // Serve a setup page instead of the app
-    app.get('*', (req, res) => {
-        res.send(`
-            <html>
-            <head>
-                <title>Setup Required</title>
-                <style>
-                    body { font-family: sans-serif; padding: 40px; background: #fef2f2; color: #991b1b; }
-                    .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-                    h1 { margin-top: 0; }
-                    code { background: #fee2e2; padding: 2px 5px; border-radius: 4px; }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <h1>⚠️ Setup Required</h1>
-                    <p>The application cannot start because some configurations are missing:</p>
-                    <ul>
-                        ${!CREDENTIALS_EXISTS ? '<li>❌ <code>service_account.json</code> file is missing in the project root.</li>' : ''}
-                        ${!SPREADSHEET_CONFIGURED ? '<li>❌ <code>SPREADSHEET_ID</code> in <code>.env</code> is not configured.</li>' : ''}
-                    </ul>
-                    <p>Please check the <code>README.md</code> for instructions on how to set these up.</p>
-                    <p>After fixing, please <strong>restart the server</strong>.</p>
-                </div>
-            </body>
-            </html>
-        `);
-    });
-} else {
-    // Normal Routes
+if (IS_MOCKED) {
+    console.warn("=================================================");
+    console.warn("⚠️ WARNING: Configuration missing!");
+    if (!CREDENTIALS_EXISTS) console.warn(" - service_account.json not found.");
+    if (!SPREADSHEET_CONFIGURED) console.warn(" - SPREADSHEET_ID not set in .env.");
+    console.warn(" Running in MOCK DATA mode.");
+    console.warn("=================================================");
+}
+
+// Normal Routes
 
     // Check if user is logged in
     function requireLogin(req, res, next) {
@@ -391,7 +368,7 @@ if (!CREDENTIALS_EXISTS || !SPREADSHEET_CONFIGURED) {
             res.status(500).json({ error: 'Failed to delete appraisal' });
         }
     });
-}
+
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);

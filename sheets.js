@@ -9,6 +9,39 @@ let sheetsService = null;
 
 const fs = require('fs');
 
+// Mock Data for fallback
+const MOCK_DATA = {
+    employees: [
+        { email: 'admin@hr.com', name: 'HR Admin', position: 'HR Manager', department: 'HR', password: 'admin' },
+        { email: 'john@hr.com', name: 'John Doe', position: 'Senior Developer', department: 'IT', password: 'password1' },
+        { email: 'jane@hr.com', name: 'Jane Smith', position: 'Designer', department: 'Product', password: 'password1' },
+        { email: 'bob@hr.com', name: 'Bob Wilson', position: 'Accountant', department: 'Finance', password: 'password1' }
+    ],
+    assignments: [
+        { reviewerEmail: 'john@hr.com', targetEmail: 'jane@hr.com' },
+        { reviewerEmail: 'jane@hr.com', targetEmail: 'john@hr.com' },
+        { reviewerEmail: 'bob@hr.com', targetEmail: 'john@hr.com' }
+    ],
+    appraisals: [
+        { 
+            timestamp: new Date().toISOString(), 
+            reviewerEmail: 'jane@hr.com', 
+            reviewerName: 'Jane Smith', 
+            targetEmail: 'john@hr.com', 
+            targetName: 'John Doe', 
+            score: 4.5, 
+            comment: 'Great teamwork and technical skills.' 
+        }
+    ]
+};
+
+const IS_MOCKED = !fs.existsSync(CREDENTIALS_PATH) || !process.env.SPREADSHEET_ID || process.env.SPREADSHEET_ID.includes('replace_with');
+
+if (IS_MOCKED) {
+    console.log('Running in MOCK DATA mode');
+}
+
+
 async function getSheetsService() {
     if (sheetsService) return sheetsService;
 
@@ -58,6 +91,9 @@ async function readSheet(range, renderOption = 'FORMATTED_VALUE') {
 }
 
 async function getEmployees() {
+    if (IS_MOCKED) {
+        return MOCK_DATA.employees;
+    }
     // Assumes KARYAWAN sheet: Email, Nama, Jabatan, Departemen, Password
     // Skipping header row is handled by logic or explicit range 'KARYAWAN!A2:E'
     const rows = await readSheet('KARYAWAN!A2:E');
@@ -71,6 +107,11 @@ async function getEmployees() {
 }
 
 async function getAssignments(reviewerEmail) {
+    if (IS_MOCKED) {
+        return MOCK_DATA.assignments
+            .filter(a => a.reviewerEmail.toLowerCase() === reviewerEmail.toLowerCase())
+            .map(a => a.targetEmail);
+    }
     // Assumes ASSIGNMENT_360 sheet: Email Penilai, Email Yang Dinilai
     const rows = await readSheet('ASSIGNMENT_360!A2:B');
     // Filter rows where first column matches reviewerEmail
@@ -82,6 +123,13 @@ async function getAssignments(reviewerEmail) {
 }
 
 async function saveAppraisal(data) {
+    if (IS_MOCKED) {
+        MOCK_DATA.appraisals.push({
+            timestamp: new Date().toISOString(),
+            ...data
+        });
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -110,6 +158,11 @@ async function saveAppraisal(data) {
 }
 
 async function getCompletedAppraisals(reviewerEmail) {
+    if (IS_MOCKED) {
+        return MOCK_DATA.appraisals
+            .filter(a => a.reviewerEmail.toLowerCase() === reviewerEmail.toLowerCase())
+            .map(a => a.targetEmail);
+    }
     // Get all appraisals by this reviewer
     const rows = await readSheet('HASIL_PENILAIAN!A2:G');
     const completedEmails = rows
@@ -120,6 +173,13 @@ async function getCompletedAppraisals(reviewerEmail) {
 }
 
 async function deleteAppraisal(rowIndex) {
+    if (IS_MOCKED) {
+        const arrayIndex = rowIndex - 2;
+        if (arrayIndex >= 0 && arrayIndex < MOCK_DATA.appraisals.length) {
+            MOCK_DATA.appraisals.splice(arrayIndex, 1);
+        }
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -149,6 +209,12 @@ async function deleteAppraisal(rowIndex) {
 // Admin Functions for CRUD
 
 async function getAllAssignments() {
+    if (IS_MOCKED) {
+        return MOCK_DATA.assignments.map((a, index) => ({
+            id: index + 2,
+            ...a
+        }));
+    }
     const rows = await readSheet('ASSIGNMENT_360!A2:B');
     return rows.map((row, index) => ({
         id: index + 2, // row number in sheet
@@ -158,6 +224,10 @@ async function getAllAssignments() {
 }
 
 async function addEmployee(employee) {
+    if (IS_MOCKED) {
+        MOCK_DATA.employees.push(employee);
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -183,6 +253,14 @@ async function addEmployee(employee) {
 }
 
 async function updateEmployee(rowIndex, employee) {
+    if (IS_MOCKED) {
+        // rowIndex is 1-indexed and header-accounted (usually arrayIndex + 2)
+        const arrayIndex = rowIndex - 2;
+        if (arrayIndex >= 0 && arrayIndex < MOCK_DATA.employees.length) {
+            MOCK_DATA.employees[arrayIndex] = employee;
+        }
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -208,6 +286,13 @@ async function updateEmployee(rowIndex, employee) {
 }
 
 async function deleteEmployee(rowIndex) {
+    if (IS_MOCKED) {
+        const arrayIndex = rowIndex - 2;
+        if (arrayIndex >= 0 && arrayIndex < MOCK_DATA.employees.length) {
+            MOCK_DATA.employees.splice(arrayIndex, 1);
+        }
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -235,6 +320,10 @@ async function deleteEmployee(rowIndex) {
 }
 
 async function addAssignment(assignment) {
+    if (IS_MOCKED) {
+        MOCK_DATA.assignments.push(assignment);
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -257,6 +346,13 @@ async function addAssignment(assignment) {
 }
 
 async function deleteAssignment(rowIndex) {
+    if (IS_MOCKED) {
+        const arrayIndex = rowIndex - 2;
+        if (arrayIndex >= 0 && arrayIndex < MOCK_DATA.assignments.length) {
+            MOCK_DATA.assignments.splice(arrayIndex, 1);
+        }
+        return;
+    }
     const service = await getSheetsService();
     const spreadsheetId = process.env.SPREADSHEET_ID;
 
@@ -284,6 +380,12 @@ async function deleteAssignment(rowIndex) {
 }
 
 async function getAppraisalResults() {
+    if (IS_MOCKED) {
+        return MOCK_DATA.appraisals.map((a, index) => ({
+            rowIndex: index + 2,
+            ...a
+        }));
+    }
     // Use UNFORMATTED_VALUE to get precise numbers (e.g. 4.5) instead of rounded strings (e.g. "5")
     const rows = await readSheet('HASIL_PENILAIAN!A2:G', 'UNFORMATTED_VALUE');
     return rows.map((row, index) => ({
