@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
@@ -29,13 +30,16 @@
                     autocomplete="current-password">
             </div>
             <button type="submit" class="btn-primary" id="loginBtn">
-                <span>Sign In</span>
+                <span style="display:flex; align-items:center; gap:8px;"><i data-lucide="log-in" style="width: 18px; height: 18px;"></i> Sign In</span>
                 <div class="loader hidden"></div>
             </button>
             <div id="errorMsg" class="error-message hidden"></div>
         </form>
     </div>
     <script src="client.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

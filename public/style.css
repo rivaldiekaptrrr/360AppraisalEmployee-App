@@ -1128,6 +1128,12 @@ tbody tr:hover {
     border-radius: 12px;
 }
 
+.stats-icon svg {
+    width: 32px;
+    height: 32px;
+    color: var(--primary-color);
+}
+
 .stats-info {
     flex: 1;
 }
@@ -1215,7 +1221,14 @@ tbody tr:hover {
 .confirm-icon {
     font-size: 3.5rem;
     margin-bottom: 1rem;
-    display: block;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-icon svg {
+    width: 56px;
+    height: 56px;
+    color: #ef4444;
 }
 
 .confirm-title {

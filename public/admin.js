@@ -79,7 +79,9 @@ const navMenu = document.getElementById('navMenu');
 if (navToggle && navMenu) {
     navToggle.addEventListener('click', () => {
         navMenu.classList.toggle('show');
-        navToggle.textContent = navMenu.classList.contains('show') ? '✕' : '☰';
+        const isShow = navMenu.classList.contains('show');
+        navToggle.innerHTML = isShow ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+        lucide.createIcons();
     });
 }
 
@@ -387,12 +389,17 @@ function renderEmployees(employees) {
             <td>${emp.position || '-'}</td>
             <td>${emp.department || '-'}</td>
             <td>
-                <button class="btn-icon" onclick="editEmployee(${emp.rowIndex})">✏️</button>
-                <button class="btn-icon" onclick="deleteEmployee(${emp.rowIndex})">🗑️</button>
+                <button class="btn-icon" onclick="editEmployee(${emp.rowIndex})"><i data-lucide="edit-2" style="width: 16px; height: 16px;"></i></button>
+                <button class="btn-icon" onclick="deleteEmployee(${emp.rowIndex})"><i data-lucide="trash-2" style="width: 16px; height: 16px; color: #ef4444;"></i></button>
             </td>
         `;
         tbody.appendChild(tr);
     });
+    
+    // Initialize icons for newly rendered elements
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 // Search Employee Handler
@@ -783,10 +790,10 @@ function renderResults(results) {
                 <p class="comment-text">"${displayComment}"</p>
             </div>
             <div class="result-footer">
-                <small class="timestamp">📅 ${date}</small>
+                <small class="timestamp" style="display:flex; align-items:center; gap:4px;"><i data-lucide="calendar" style="width: 12px; height: 12px;"></i> ${date}</small>
                 <div class="card-actions">
                     <button class="btn-view-detail" onclick="viewResultDetail(${result.rowIndex})">View Detail</button>
-                    <button class="btn-icon-delete" onclick="deleteResult(${result.rowIndex})" title="Hapus Penilaian">🗑️</button>
+                    <button class="btn-icon-delete" onclick="deleteResult(${result.rowIndex})" title="Hapus Penilaian"><i data-lucide="trash-2" style="width: 16px; height: 16px; color: #ef4444;"></i></button>
                 </div>
             </div>
         `;
@@ -794,6 +801,11 @@ function renderResults(results) {
     });
 
     container.appendChild(grid);
+    
+    // Initialize icons for newly rendered elements
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 // Global function to view details

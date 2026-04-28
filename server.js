@@ -54,7 +54,13 @@ if (IS_MOCKED) {
             const user = employees.find(e => e.email.toLowerCase() === email.toLowerCase());
 
             // Check if admin
-            const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase());
+            let adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(e => e);
+            
+            // In mock mode, if no admin emails are configured, default to admin@hr.com
+            if (IS_MOCKED && adminEmails.length === 0) {
+                adminEmails = ['admin@hr.com'];
+            }
+            
             const isAdmin = adminEmails.includes(email.toLowerCase());
 
             if (isAdmin) {

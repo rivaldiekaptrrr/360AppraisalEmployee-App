@@ -9,13 +9,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="dashboard-body">
     <nav class="navbar glass-panel">
         <div class="nav-brand">HR 360°</div>
         <button class="hamburger" id="navToggle" aria-label="Toggle Navigation">
-            ☰
+            <i data-lucide="menu"></i>
         </button>
         <div class="nav-user" id="navMenu">
             <div id="userAvatar" class="avatar hidden"></div>
@@ -56,7 +57,7 @@
             </div>
 
             <div id="emptyState" class="empty-state hidden">
-                <h3>🎉 All Caught Up!</h3>
+                <h3 style="display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="party-popper"></i> All Caught Up!</h3>
                 <p>You have no pending appraisals.</p>
             </div>
 
@@ -430,7 +431,7 @@
     <!-- Onboarding Modal -->
     <div id="modalOnboarding" class="modal hidden">
         <div class="modal-content glass-panel onboarding-content">
-            <h2 style="font-size: 1.75rem; color: var(--primary-color);">Halo! 👋</h2>
+            <h2 style="font-size: 1.75rem; color: var(--primary-color); display:flex; align-items:center; gap:8px;">Halo! <i data-lucide="hand"></i></h2>
             <p>Selamat datang di sistem <b>360° Employee Appraisal</b>. Sistem ini dirancang untuk memberikan masukan
                 konstruktif antar rekan kerja.</p>
 
@@ -465,7 +466,7 @@
     <!-- Custom Confirm Modal -->
     <div id="modalConfirm" class="modal hidden">
         <div class="modal-content glass-panel confirm-modal-content">
-            <span class="confirm-icon">⚠️</span>
+            <span class="confirm-icon"><i data-lucide="alert-triangle"></i></span>
             <h3 class="confirm-title" id="confirmTitle">Apakah Anda yakin?</h3>
             <p class="confirm-text" id="confirmText">Tindakan ini tidak dapat dibatalkan.</p>
             <div class="confirm-actions">
@@ -476,6 +477,9 @@
     </div>
 
     <script src="client.js?v=2"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

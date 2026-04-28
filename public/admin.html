@@ -11,13 +11,14 @@
     <link rel="stylesheet" href="style.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="dashboard-body">
     <nav class="navbar glass-panel">
         <div class="nav-brand">HR 360° - Admin Panel</div>
         <button class="hamburger" id="navToggle" aria-label="Toggle Navigation">
-            ☰
+            <i data-lucide="menu"></i>
         </button>
         <div class="nav-user" id="navMenu">
             <div id="userAvatar" class="avatar hidden"></div>
@@ -43,28 +44,28 @@
 
             <div class="stats-grid">
                 <div class="stats-card glass-panel fade-in" style="animation-delay: 0.1s">
-                    <div class="stats-icon">👥</div>
+                    <div class="stats-icon"><i data-lucide="users"></i></div>
                     <div class="stats-info">
                         <span class="stats-label">Total Karyawan</span>
                         <h3 id="statTotalEmployees" class="stats-value">-</h3>
                     </div>
                 </div>
                 <div class="stats-card glass-panel fade-in" style="animation-delay: 0.2s">
-                    <div class="stats-icon">📝</div>
+                    <div class="stats-icon"><i data-lucide="clipboard-list"></i></div>
                     <div class="stats-info">
                         <span class="stats-label">Total Assignment</span>
                         <h3 id="statTotalAssignments" class="stats-value">-</h3>
                     </div>
                 </div>
                 <div class="stats-card glass-panel fade-in" style="animation-delay: 0.3s">
-                    <div class="stats-icon">✅</div>
+                    <div class="stats-icon"><i data-lucide="check-circle"></i></div>
                     <div class="stats-info">
                         <span class="stats-label">Penilaian Selesai</span>
                         <h3 id="statCompletedAppraisals" class="stats-value">-</h3>
                     </div>
                 </div>
                 <div class="stats-card glass-panel fade-in" style="animation-delay: 0.4s">
-                    <div class="stats-icon">📊</div>
+                    <div class="stats-icon"><i data-lucide="bar-chart-2"></i></div>
                     <div class="stats-info">
                         <span class="stats-label">Progress</span>
                         <h3 id="statProgress" class="stats-value">-</h3>
@@ -155,7 +156,7 @@
                     </div>
                     <button class="btn-secondary" id="btnExportExcel"
                         style="display: flex; align-items: center; gap: 0.5rem; height: 42px;">
-                        📊 Export Excel
+                        <i data-lucide="file-spreadsheet" style="width: 18px; height: 18px;"></i> Export Excel
                     </button>
                 </div>
             </div>
@@ -252,7 +253,7 @@
     <!-- Custom Confirm Modal -->
     <div id="modalConfirm" class="modal hidden">
         <div class="modal-content glass-panel confirm-modal-content">
-            <span class="confirm-icon">⚠️</span>
+            <span class="confirm-icon"><i data-lucide="alert-triangle"></i></span>
             <h3 class="confirm-title" id="confirmTitle">Apakah Anda yakin?</h3>
             <p class="confirm-text" id="confirmText">Tindakan ini tidak dapat dibatalkan.</p>
             <div class="confirm-actions">
@@ -263,6 +264,9 @@
     </div>
 
     <script src="admin.js?v=2"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>

@@ -103,7 +103,9 @@ if (document.querySelector('.dashboard-body')) {
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('show');
-            navToggle.textContent = navMenu.classList.contains('show') ? '✕' : '☰';
+            const isShow = navMenu.classList.contains('show');
+            navToggle.innerHTML = isShow ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+            if (window.lucide) lucide.createIcons();
         });
     }
 

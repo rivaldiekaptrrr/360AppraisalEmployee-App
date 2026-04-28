@@ -12,7 +12,7 @@ const fs = require('fs');
 // Mock Data for fallback
 const MOCK_DATA = {
     employees: [
-        { email: 'admin@hr.com', name: 'HR Admin', position: 'HR Manager', department: 'HR', password: 'admin' },
+        { email: 'admin@hr.com', name: 'HR Admin', position: 'HR Manager', department: 'HR', password: 'admin123' },
         { email: 'john@hr.com', name: 'John Doe', position: 'Senior Developer', department: 'IT', password: 'password1' },
         { email: 'jane@hr.com', name: 'Jane Smith', position: 'Designer', department: 'Product', password: 'password1' },
         { email: 'bob@hr.com', name: 'Bob Wilson', position: 'Accountant', department: 'Finance', password: 'password1' }
