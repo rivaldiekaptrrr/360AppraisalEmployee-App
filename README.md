@@ -1,6 +1,6 @@
-# 360 Degree Employee Appraisal System
+# Empower360
 
-Sistem penilaian karyawan 360 derajat berbasis web yang terhubung dengan Google Sheets sebagai database.
+Empower360 adalah sistem penilaian karyawan 360 derajat berbasis web yang terhubung dengan Google Sheets sebagai database.
 
 ---
 
@@ -31,7 +31,7 @@ Sistem penilaian karyawan 360 derajat berbasis web yang terhubung dengan Google 
 #### A. Buat Google Cloud Project
 1. Kunjungi [Google Cloud Console](https://console.cloud.google.com/)
 2. Klik **"New Project"**
-3. Nama project: `HR-360-Appraisal` (atau nama lain)
+3. Nama project: `Empower360`
 4. Klik **"Create"**
 
 #### B. Enable Google Sheets API
@@ -44,7 +44,7 @@ Sistem penilaian karyawan 360 derajat berbasis web yang terhubung dengan Google 
 1. Buka **"APIs & Services"** > **"Credentials"**
 2. Klik **"Create Credentials"** > **"Service Account"**
 3. Isi:
-   - **Service account name:** `hr-360-service`
+   - **Service account name:** `empower360-service`
    - Klik **"Create and Continue"**
 4. Role: Skip (atau pilih Basic > Editor)
 5. Klik **"Done"**
@@ -111,7 +111,7 @@ Sistem penilaian karyawan 360 derajat berbasis web yang terhubung dengan Google 
 1. Buka file `service_account.json`
 2. Cari dan copy `"client_email"`, contoh:
    ```
-   "client_email": "hr-360-service@hr-360-appraisal.iam.gserviceaccount.com"
+   "client_email": "empower360-service@empower360.iam.gserviceaccount.com"
    ```
 3. Di Google Spreadsheet, klik **"Share"**
 4. Paste email service account

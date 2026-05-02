@@ -35,7 +35,7 @@ const MOCK_DATA = {
     ]
 };
 
-const IS_MOCKED = !fs.existsSync(CREDENTIALS_PATH) || !process.env.SPREADSHEET_ID || process.env.SPREADSHEET_ID.includes('replace_with');
+const IS_MOCKED = process.env.USE_MOCK_DATA === 'true' || !fs.existsSync(CREDENTIALS_PATH) || !process.env.SPREADSHEET_ID || process.env.SPREADSHEET_ID.includes('replace_with');
 
 if (IS_MOCKED) {
     console.log('Running in MOCK DATA mode');

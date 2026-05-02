@@ -1,10 +1,10 @@
-# � Setup Guide - 360 Degree Employee Appraisal System
+# 🚀 Setup Guide - Empower360
 
-Panduan lengkap setup aplikasi penilaian karyawan 360 derajat.
+Panduan lengkap setup Empower360.
 
 ---
 
-## �📋 LANGKAH 1: Membuat Google Spreadsheet
+## 📋 LANGKAH 1: Membuat Google Spreadsheet
 
 ### 1. Buka Google Sheets
 - Kunjungi: https://sheets.google.com
@@ -108,7 +108,7 @@ Ini adalah bagian yang paling penting!
 2. **Buat Project Baru:**
    - Klik dropdown project di atas
    - Klik **"New Project"**
-   - Nama project: `HR-360-Appraisal`
+   - Nama project: `Empower360`
    - Klik **"Create"**
 
 ---
@@ -127,7 +127,7 @@ Ini adalah bagian yang paling penting!
 1. Buka **"APIs & Services"** > **"Credentials"**
 2. Klik **"Create Credentials"** > pilih **"Service Account"**
 3. Isi form:
-   - **Service account name:** `hr-360-service`
+   - **Service account name:** `empower360-service`
    - **Service account ID:** (akan terisi otomatis)
    - Klik **"Create and Continue"**
 4. **Role:** Pilih `Basic` > `Editor` (atau bisa skip step ini)
@@ -160,7 +160,7 @@ Ini adalah bagian yang paling penting!
 
 2. **Cari bagian** `"client_email"`, akan terlihat seperti:
    ```json
-   "client_email": "hr-360-service@hr-360-appraisal.iam.gserviceaccount.com"
+   "client_email": "empower360-service@empower360.iam.gserviceaccount.com"
    ```
 
 3. **Copy email tersebut**
@@ -337,4 +337,4 @@ Gunakan checklist ini untuk memastikan semua sudah benar:
 
 Jika semua checklist sudah ✅, aplikasi siap digunakan!
 
-**Selamat menggunakan sistem penilaian 360 derajat! 🚀**
+**Selamat menggunakan Empower360! 🚀**

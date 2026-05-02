@@ -1,7 +1,7 @@
 {
-  "name": "hr-360-appraisal",
+  "name": "empower360",
   "version": "1.0.0",
-  "description": "360 Degree Employee Appraisal System connected to Google Sheets",
+  "description": "Empower360 - 360 Degree Employee Appraisal System connected to Google Sheets",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
