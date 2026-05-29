@@ -1,10 +1,10 @@
 // Client-side logic
 
-const API_Login = '/api/login';
-const API_User = '/api/user';
-const API_Assignments = '/api/assignments';
-const API_Submit = '/api/submit';
-const API_Logout = '/api/logout';
+const API_Login = 'api/login';
+const API_User = 'api/user';
+const API_Assignments = 'api/assignments';
+const API_Submit = 'api/submit';
+const API_Logout = 'api/logout';
 
 let assignments = [];
 

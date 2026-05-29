@@ -1,10 +1,10 @@
 // Admin Dashboard Logic
 
-const API_User = '/api/user';
-const API_Logout = '/api/logout';
-const API_Employees = '/api/admin/employees';
-const API_Assignments = '/api/admin/assignments';
-const API_Results = '/api/admin/results';
+const API_User = 'api/user';
+const API_Logout = 'api/logout';
+const API_Employees = 'api/admin/employees';
+const API_Assignments = 'api/admin/assignments';
+const API_Results = 'api/admin/results';
 
 let currentEditEmployee = null;
 let allEmployees = [];
