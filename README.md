@@ -171,7 +171,8 @@ Jika Anda ingin mencoba aplikasi tanpa melakukan setup Google Cloud dan Google S
 2. Aplikasi akan otomatis mendeteksi konfigurasi yang hilang dan berjalan menggunakan data sementara di memori.
 
 ### Data Login Mock:
-- **Admin:** `admin@hr.com` / `admin123`
+- **Admin:** Menggunakan email yang ada di `ADMIN_EMAILS` pada file `.env` (contoh: `hrd@company.com` / `admin123`). *(Jika tidak ada file `.env`, defaultnya: `admin@hr.com`)*.
+- **Karyawan (Tester):** `admin@hr.com` / `admin123` (Jika tidak terdaftar sebagai Admin di `.env`)
 - **Karyawan 1:** `john@hr.com` / `password1` (Dapat menilai Jane)
 - **Karyawan 2:** `jane@hr.com` / `password1` (Dapat menilai John)
 - **Karyawan 3:** `bob@hr.com` / `password1` (Dapat menilai John)
