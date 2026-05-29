@@ -9,9 +9,9 @@ Empower360 adalah sistem penilaian karyawan 360 derajat berbasis web yang terhub
 ### Untuk Karyawan:
 - ✅ Login dengan email dan password
 - ✅ Melihat daftar karyawan yang harus dinilai (sesuai assignment)
-- ✅ Memberikan penilaian (rating 1-5 dan komentar)
+- ✅ Memberikan penilaian (skala 1-5 untuk 10 kriteria dan komentar)
 - ✅ Otomatis menyembunyikan karyawan yang sudah dinilai
-- ✅ Tidak bisa menilai diri sendiri
+- ✅ Mendukung fitur Self-Appraisal (Menilai diri sendiri)
 - ✅ Tidak bisa menilai karyawan di luar assignment
 
 ### Untuk Admin/HRD:
@@ -59,7 +59,7 @@ Empower360 adalah sistem penilaian karyawan 360 derajat berbasis web yang terhub
 
 #### E. Setup File Credentials
 1. **Rename** file JSON yang didownload menjadi: `service_account.json`
-2. **Pindahkan** file ke folder: `d:\App\HR App\`
+2. **Pindahkan** file ke root folder aplikasi Anda (sejajar dengan file `server.js`)
 
 ---
 
@@ -133,7 +133,7 @@ Empower360 adalah sistem penilaian karyawan 360 derajat berbasis web yang terhub
 ### 3️⃣ Konfigurasi Aplikasi
 
 #### Edit File `.env`
-Buka file `d:\App\HR App\.env` dan isi:
+Buka (atau buat) file `.env` di folder project Anda dan isi:
 
 ```env
 PORT=3000
@@ -153,7 +153,7 @@ ADMIN_PASSWORD=admin123
 ### 4️⃣ Install Dependencies & Run
 
 ```bash
-cd "d:\App\HR App"
+cd folder-project-anda
 npm install
 npm start
 ```
@@ -227,7 +227,7 @@ Password: admin123
 - ✅ Password authentication untuk karyawan dan admin
 - ✅ Session management
 - ✅ Validasi assignment (tidak bisa menilai sembarangan)
-- ✅ Tidak bisa menilai diri sendiri
+- ✅ Dukungan fitur Self-Appraisal secara aman
 - ✅ Admin password terpisah dari karyawan
 
 ---
